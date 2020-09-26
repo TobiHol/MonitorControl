@@ -31,7 +31,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     self.subscribeEventListeners()
     self.setDefaultPrefs()
     self.updateMediaKeyTap()
-    self.statusItem.image = NSImage(named: "status")
+    self.statusItem.button?.image = NSImage(named: "status")
     self.statusItem.menu = self.statusMenu
     self.checkPermissions()
     CGDisplayRegisterReconfigurationCallback({ _, _, _ in app.updateDisplays() }, nil)
@@ -110,33 +110,33 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         self.addDisplayToMenu(display: display, asSubMenu: ddcDisplays.count > 1)
       }
       if ddcDisplays.count > 1 {
-        addAllMonitorsToMenu()
+        self.addAllMonitorsToMenu()
       }
     }
   }
-  
+
 //  Add menu Item to configure all monitors at once
   private func addAllMonitorsToMenu() {
     let allMonitorsMenu = NSMenu()
-    
+
     let brightnessSliderHandler = Utils.addAllMonitorsSliderMenuItem(toMenu: allMonitorsMenu,
-                                                          command: .brightness,
-                                                          title: NSLocalizedString("Brightness", comment: "Shown in menu"))
+                                                                     command: .brightness,
+                                                                     title: NSLocalizedString("Brightness", comment: "Shown in menu"))
     allMonitorHandlers.append(brightnessSliderHandler)
     if prefs.bool(forKey: Utils.PrefKeys.showContrast.rawValue) {
       let contrastSliderHandler = Utils.addAllMonitorsSliderMenuItem(toMenu: allMonitorsMenu,
-                                                          command: .contrast,
-                                                          title: NSLocalizedString("Contrast", comment: "Shown in menu"))
+                                                                     command: .contrast,
+                                                                     title: NSLocalizedString("Contrast", comment: "Shown in menu"))
       allMonitorHandlers.append(contrastSliderHandler)
     }
-    
+
     let allMonitorsMenuItem = NSMenuItem()
     allMonitorsMenuItem.title = "All Monitors"
     allMonitorsMenuItem.submenu = allMonitorsMenu
     self.statusMenu.insertItem(allMonitorsMenuItem, at: 0)
     self.statusMenu.insertItem(NSMenuItem.separator(), at: 1)
   }
-  
+
   private func addDisplayToMenu(display: ExternalDisplay, asSubMenu: Bool) {
     let monitorSubMenu: NSMenu = asSubMenu ? NSMenu() : self.statusMenu
 
@@ -177,7 +177,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   }
 
   private func setupViewControllers() {
-    let storyboard: NSStoryboard = NSStoryboard(name: "Main", bundle: Bundle.main)
+    let storyboard = NSStoryboard(name: "Main", bundle: Bundle.main)
     let mainPrefsVc = storyboard.instantiateController(withIdentifier: "MainPrefsVC")
     let keyPrefsVc = storyboard.instantiateController(withIdentifier: "KeysPrefsVC")
     let displayPrefsVc = storyboard.instantiateController(withIdentifier: "DisplayPrefsVC")

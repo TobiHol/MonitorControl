@@ -18,7 +18,7 @@ class AllMonitorsSliderHandler {
     self.handlers = handlers
     self.cmd = command
   }
-  
+
   @objc func valueChanged(slider: NSSlider) {
     let snapInterval = 25
     let snapThreshold = 3
@@ -29,7 +29,7 @@ class AllMonitorsSliderHandler {
       value = closest
       slider.integerValue = value
     }
-    
+
     for handler in self.handlers {
       handler.slider!.integerValue = value
       handler.valueChanged(slider: handler.slider!)

@@ -91,6 +91,7 @@ class Utils: NSObject {
     slider.isEnabled = true
     return handler
   }
+
   // MARK: - Menu
 
   /// Create slider for 'All Monitors' Menu
@@ -102,11 +103,11 @@ class Utils: NSObject {
   /// - Returns: An `NSSlider` slider
   static func addAllMonitorsSliderMenuItem(toMenu menu: NSMenu, command: DDC.Command, title: String) -> AllMonitorsSliderHandler {
     let item = NSMenuItem()
-    
+
     let displays = DisplayManager.shared.getDdcCapableDisplays()
-    var handlers : [SliderHandler] = []
-    
-    for display in displays where display.isEnabled{
+    var handlers: [SliderHandler] = []
+
+    for display in displays where display.isEnabled {
       switch command {
       case .brightness:
         handlers.append(display.brightnessSliderHandler!)
@@ -116,25 +117,25 @@ class Utils: NSObject {
         break
       }
     }
-    
+
     let handler = AllMonitorsSliderHandler(handlers: handlers, command: command)
 
     let slider = NSSlider(value: 0, minValue: 0, maxValue: 100, target: handler, action: #selector(AllMonitorsSliderHandler.valueChanged))
-    
+
     slider.isEnabled = false
     slider.frame.size.width = 180
     slider.frame.origin = NSPoint(x: 20, y: 5)
-    
+
     handler.slider = slider
-    
+
     let view = NSView(frame: NSRect(x: 0, y: 0, width: slider.frame.width + 30, height: slider.frame.height + 10))
     view.addSubview(slider)
     item.view = view
     menu.insertItem(item, at: 0)
     menu.insertItem(withTitle: title, action: nil, keyEquivalent: "", at: 0)
-    
-    var DDCValues : [Int] = []
-    var maxValue : Double = 0.0
+
+    var DDCValues: [Int] = []
+    var maxValue: Double = 0.0
     for h in handlers {
       DDCValues.append(h.slider!.integerValue)
       maxValue = max(maxValue, h.slider!.maxValue)
@@ -142,11 +143,10 @@ class Utils: NSObject {
     let averageDDCValue = DDCValues.reduce(0, +) / DDCValues.count
     slider.integerValue = Int(averageDDCValue)
     slider.maxValue = Double(maxValue)
-    
+
     slider.isEnabled = true
     return handler
   }
- 
 
   // MARK: - Utilities
 

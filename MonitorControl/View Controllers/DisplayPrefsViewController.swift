@@ -36,7 +36,7 @@ class DisplayPrefsViewController: NSViewController, MASPreferencesViewController
   }
 
   deinit {
-    NotificationCenter.default.removeObserver(self)
+//    NotificationCenter.default.removeObserver(self)
   }
 
   @IBAction func allScreensTouched(_ sender: NSButton) {
@@ -69,7 +69,8 @@ class DisplayPrefsViewController: NSViewController, MASPreferencesViewController
   func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
     guard let tableColumn = tableColumn,
       let columnIndex = tableView.tableColumns.firstIndex(of: tableColumn),
-      let column = DisplayColumn(rawValue: columnIndex) else {
+      let column = DisplayColumn(rawValue: columnIndex)
+    else {
       return nil
     }
     let display = self.displays[row]
